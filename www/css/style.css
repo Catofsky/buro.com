@@ -1,0 +1,151 @@
+@font-face {
+	font-family: Ubuntu;
+	src: url(fonts/ubuntu.ttf);
+}
+
+body {
+	font-family: Ubuntu, Tahoma, Arial;
+	background: fixed #1b1d2b url(../img/bg.png) center top no-repeat;
+}
+
+#content {
+	background-color: #362732;
+	width: 900px;
+    height: 275px;
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    margin: auto;
+}
+
+h1 {
+	margin: 16px 30px;
+	color: #ffccb3;
+	text-shadow: 3px 3px 0px #271823;
+}
+
+table {
+	padding: 0;
+	margin: 24px 20px;
+	width: 95%;
+	text-shadow: 1px 1px 0px rgba(0, 0, 0, 0.2);
+	border-spacing: 4px 4px;
+	cursor: default;
+}
+
+tr {
+	background: #dd8472;
+	color: #6d3655;
+	font-weight: bold;
+}
+
+tr:first-child>td {
+	text-align: center;
+}
+
+.dat {
+	background: #6d3655;
+	color: #fcd5c2;
+	font-weight: normal;
+
+	transition: background .2s ease-in-out;
+	-moz-transition: background .2s ease-in-out;
+	-webkit-transition: background .2s ease-in-out;
+	-o-transition: background .2s ease-in-out;
+}
+
+td {
+	padding: 6px 6px;
+}
+
+.dat:hover {
+	background: #b05c6b;
+	color: #fce5d2;
+}
+
+.icon {
+	width: 16px;
+	height: 16px;
+	display: block;
+	margin: auto;
+}
+
+#bg-popup {
+	position: fixed;
+	top: 0;
+	right: 0;
+	left: 0;
+	bottom: 0;
+	z-index: 10;
+	background: rgba(0, 0, 0, .7);
+	display: none;
+}
+
+.popup {
+    width: 350px;
+    height: 130px;
+    padding: 10px;
+    background-color: #362732;
+    position: fixed;
+    margin: auto;
+	top: 0;
+	right: 0;
+	left: 0;
+	bottom: 0;
+	z-index: 10;
+	box-shadow: 0 0 12px rgba(0, 0, 0, 0.7);
+	display: none;
+	cursor: default;
+
+	user-select: none;
+	-moz-user-select: none;
+	-webkit-user-select: none;
+	-o-user-select: none;
+}
+
+.popup>h1 {
+	margin: 10px;
+	padding: 0;
+	color: #ffccb3;
+	text-shadow: 3px 3px 0px #271823;
+	font-size: 20px;
+	text-align: center;
+}
+
+.popup>p {
+	margin: 10px;
+	padding: 0;
+	color: #ffccb3;
+	text-align: center;
+}
+
+.popup>.buttons {
+	width: 220px;
+	padding: 5px 0 0 0;
+	margin: auto;
+}
+
+.yes-btn, .no-btn {
+	display: inline-block;
+	margin: 4px 4px;
+	width: 95px;
+	height: 30px;
+	background: #6d3655;
+	text-align: center;
+	color: #fcd5c2;
+	padding: 10px 0 0 0;
+	font-weight: bold;
+	text-shadow: 2px 2px 0px rgba(0, 0, 0, .2);
+}
+
+.no-btn {
+	float: right;
+}
+
+.yes-btn:hover, .no-btn:hover {
+	cursor: default;
+	background: #b05c6b;
+	color: #fcd5c2;
+}
