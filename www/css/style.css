@@ -83,9 +83,7 @@ td {
 	display: none;
 }
 
-.popup {
-    width: 350px;
-    height: 130px;
+.popup, .edit-popup {
     padding: 10px;
     background-color: #362732;
     position: fixed;
@@ -105,7 +103,21 @@ td {
 	-o-user-select: none;
 }
 
-.popup>h1 {
+.popup {
+	width: 350px;
+    height: 130px;
+}
+
+.edit-popup {
+	width: 350px;
+	height: 440px;
+}
+
+input {
+	margin: 5px 30px 5px 20px;
+}
+
+.popup>h1, .edit-popup>h1 {
 	margin: 10px;
 	padding: 0;
 	color: #ffccb3;
@@ -114,20 +126,25 @@ td {
 	text-align: center;
 }
 
-.popup>p {
+.popup>p, .edit-popup>p {
 	margin: 10px;
 	padding: 0;
 	color: #ffccb3;
 	text-align: center;
 }
 
-.popup>.buttons {
+.edit-popup>p {
+	width: 140px;
+	text-align: left;
+}
+
+.popup>.buttons, .edit-popup.buttons {
 	width: 220px;
 	padding: 5px 0 0 0;
 	margin: auto;
 }
 
-.yes-btn, .no-btn {
+.yes-btn, .no-btn, .ok-btn {
 	display: inline-block;
 	margin: 4px 4px;
 	width: 95px;
@@ -144,7 +161,7 @@ td {
 	float: right;
 }
 
-.yes-btn:hover, .no-btn:hover {
+.yes-btn:hover, .no-btn:hover, .ok-btn:hover {
 	cursor: default;
 	background: #b05c6b;
 	color: #fcd5c2;
