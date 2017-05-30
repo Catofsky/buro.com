@@ -8,7 +8,25 @@ var mounthsList = {'01':'янв', '02':'фев', '03':'мар', '04':'апр', '
 var workDict = {};
 var compDict = {};
 
+$(document).ready(main);
+
 function main() {
+	$('.login').fadeIn(500);
+
+	$(document).on('click', '.reg-btn', onReg);
+	$(document).on('click', '.reg-cancel-btn', closeReg);
+	$(document).on('click', '.reg-ok-btn', confirmReg);
+	$(document).on('click', '.login-btn', onLogin);
+}
+
+function onMain() {
+	$('.login').fadeOut(50);
+	$('.reg').fadeOut(50);
+	$('#bg-popup').fadeOut(50);
+
+	$('#content').fadeIn(500);
+	$('.add-btn').fadeIn(500);
+
 	connectDataBase('root', '', (data) => {
 			table = JSON.parse(data);
 			showTable();
@@ -21,6 +39,55 @@ function main() {
 	$(document).on('click', '.yes-btn', confirmDelete);
 	$(document).on('click', '.edit', onEdit);
 	$(document).on('click', '.ok-btn', confirmEdit);
+	$(document).on('click', '.add-btn', onAdd);
+	$(document).on('click', '.add-ok-btn', confirmAdd);
+}
+
+function onLogin() {
+	var user = $('.l-user').val();
+	var password = $('.l-pass').val();
+
+	$.ajax({
+		url: 'login.php',
+		data: {user: user, password: password},
+		type: 'POST',
+		success: (data) => {
+			if (data == '1')
+				onMain();
+		}
+	});
+}
+
+function confirmReg() {
+	var user = $('.r-user').val();
+	var password = $('.r-pass').val();
+
+	$.ajax({
+		url: 'signup.php',
+		data: {user: user, password: password},
+		type: 'POST',
+		success: (data) => {
+			closeReg();
+		}
+	});
+}
+
+function onAdd() {
+	$('#bg-popup').fadeIn(500);
+	$('.add-popup').fadeIn(500);
+}
+
+function onReg() {
+	$('#bg-popup').fadeIn(500);
+	$('.reg').fadeIn(500);
+}
+
+function closeReg() {
+	$('.r-user').val('');
+	$('.r-pass').val('');
+
+	$('#bg-popup').fadeOut(500);
+	$('.reg').fadeOut(500);	
 }
 
 function onEdit(event) {
@@ -38,16 +105,22 @@ function onEdit(event) {
 	var comp = editTarget.children('.f-comp').html();
 	var date = editTarget.children('.f-date').html();
 
-	console.log(editTarget.html());
-
 	$('.i-name').val(name);
-	$('.i-work').val(work);
+	$('.i-work').val(findKey(workDict, work));
 	$('.i-salary').val(salary);
-	$('.i-comp').val(comp);
+	$('.i-comp').val(findKey(compDict, comp));
 	$('.i-date').val(date);
 
 	$('#bg-popup').fadeIn(500);
 	$('.edit-popup').fadeIn(500);
+}
+
+function findKey(dict, value) {
+	for (key in dict) {
+		if (dict[key] === value)
+			return key;
+	}
+	return null;
 }
 
 function onDelete(event) {
@@ -63,6 +136,25 @@ function onClose() {
 	$('#bg-popup').fadeOut(500);
 	$('.popup').fadeOut(500);
 	$('.edit-popup').fadeOut(500);
+	$('.add-popup').fadeOut(500);
+}
+
+function confirmAdd() {
+	var name = $('.a-name').val();
+	var work = $('.a-work').val();
+	var salary = $('.a-salary').val();
+	var comp = $('.a-comp').val();
+	var date = $('.a-date').val();
+
+	field = {
+		name: name,
+		work: work,
+		salary: salary,
+		comp: comp,
+		date: date
+	};
+
+	addRecord(field);
 }
 
 function confirmDelete() {
@@ -104,12 +196,43 @@ function showTable() {
 	setHeight();
 }
 
+function appendTable(row) {
+	var content = $('#content table');
+	var	res = '<tr class="dat"><td class="f-name">' + row.employ_name + '</td><td class="f-work">' + row.work_name + '</td><td align="right" class="f-salary">' + formatSalary(row.employ_salary) + '</td><td class="f-comp">' + row.comp_name + '</td><td align="right" class="f-date">' + formatDate(row.employ_date) + '</td><td class="edit"><img class="icon edit-icon" src="img/edit.png" alt="Изменить"></td><td class="delete"><img class="icon" src="img/delete.png" alt="Удалить"></td><td class="field-id" style="display: none">' + row.employ_id + '</td></tr>';
+	content.append(res);
+	setHeight();
+}
+
 function connectDataBase(login, password, func) {
 	$.ajax({
 		url: 'run.php',
 		data: {login: login, password: password},
 		type: 'POST',
 		success: func
+	});
+}
+
+function addRecord(field) {
+	$.ajax({
+		url: 'add.php',
+		data: {field: field},
+		type: 'POST',
+		success: (data) => {
+			var row = {
+				employ_name: field.name,
+				work_name: workDict[field.work],
+				employ_salary: field.salary,
+				comp_name: compDict[field.comp],
+				employ_date: field.date,
+				employ_id: data
+			};
+			table.push(row);
+
+			onClose();
+
+			console.log(table);
+			appendTable(row);
+		}
 	});
 }
 
@@ -147,8 +270,21 @@ function setDicts() {
 			for (var i = 0; i < res.comp.length; i++) {
 				compDict[res.comp[i][0]] = res.comp[i][1];
 			}
+
+			buildSelection();
 		}
 	});
+}
+
+function buildSelection() {
+	for (key in workDict) {
+		$('.a-work').append('<option value="' + key + '">' + workDict[key] + '</option>');
+		$('.i-work').append('<option value="' + key + '">' + workDict[key] + '</option>');
+	}	
+	for (key in compDict) {
+		$('.a-comp').append('<option value="' + key + '">' + compDict[key] + '</option>');
+		$('.i-comp').append('<option value="' + key + '">' + compDict[key] + '</option>');
+	}	
 }
 
 function updateField(field) {

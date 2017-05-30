@@ -18,6 +18,8 @@ body {
     bottom: 0;
     left: 0;
     margin: auto;
+	box-shadow: 5px 5px 0 rgba(0, 0, 0, .2);
+	display: none;
 }
 
 h1 {
@@ -83,7 +85,7 @@ td {
 	display: none;
 }
 
-.popup, .edit-popup {
+.popup, .edit-popup, .add-popup, .login, .reg {
     padding: 10px;
     background-color: #362732;
     position: fixed;
@@ -108,16 +110,21 @@ td {
     height: 130px;
 }
 
-.edit-popup {
+.login, .reg {
+	width: 350px;
+    height: 240px;
+}
+
+.edit-popup, .add-popup {
 	width: 350px;
 	height: 440px;
 }
 
-input {
+input, select {
 	margin: 5px 30px 5px 20px;
 }
 
-.popup>h1, .edit-popup>h1 {
+.popup>h1, .edit-popup>h1, .add-popup>h1, .login>h1, .reg h1 {
 	margin: 10px;
 	padding: 0;
 	color: #ffccb3;
@@ -126,25 +133,25 @@ input {
 	text-align: center;
 }
 
-.popup>p, .edit-popup>p {
+.popup>p, .edit-popup>p, .add-popup>p, .login>p, .reg p {
 	margin: 10px;
 	padding: 0;
 	color: #ffccb3;
 	text-align: center;
 }
 
-.edit-popup>p {
+.edit-popup>p, .add-popup>p, .login>p, .reg p {
 	width: 140px;
 	text-align: left;
 }
 
-.popup>.buttons, .edit-popup.buttons {
+.buttons {
 	width: 220px;
 	padding: 5px 0 0 0;
 	margin: auto;
 }
 
-.yes-btn, .no-btn, .ok-btn {
+.yes-btn, .no-btn, .ok-btn, .add-ok-btn, .login-btn, .reg-btn, .reg-ok-btn, .reg-cancel-btn {
 	display: inline-block;
 	margin: 4px 4px;
 	width: 95px;
@@ -157,12 +164,55 @@ input {
 	text-shadow: 2px 2px 0px rgba(0, 0, 0, .2);
 }
 
-.no-btn {
+.reg-btn {
+	width: 110px;
+}
+
+.login-btn {
+	width: 90px;
+}
+
+.no-btn, .reg-btn, .reg-cancel-btn {
 	float: right;
 }
 
-.yes-btn:hover, .no-btn:hover, .ok-btn:hover {
+.yes-btn:hover, .no-btn:hover, .ok-btn:hover, .add-ok-btn:hover, .login-btn:hover, .reg-btn:hover, .reg-cancel-btn:hover, .reg-ok-btn:hover {
 	cursor: default;
 	background: #b05c6b;
 	color: #fcd5c2;
+}
+
+.add-btn {
+	width: 100px;
+	height: 51px;
+	position: fixed;
+	left: 0;
+	right: 0;
+	top: 0;
+	bottom: 0;
+	z-index: 15;
+	margin: 50px;
+
+	color: #fcd5c2;
+	font-weight: bold;
+	text-align: center;
+	background: #6d3655;
+
+	transition: background .2s ease-in-out;
+	-moz-transition: background .2s ease-in-out;
+	-webkit-transition: background .2s ease-in-out;
+	-o-transition: background .2s ease-in-out;
+
+	cursor: pointer;
+	box-shadow: 5px 5px 0 rgba(0, 0, 0, .2);
+	display: none;
+}
+
+.add-btn:hover {
+	background: #b05c6b;
+	color: #fce5d2;
+}
+
+.add-btn p {
+	height: 45px;
 }
