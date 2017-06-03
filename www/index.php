@@ -26,10 +26,24 @@
 	</div>
 
 	<div id="content">
-		
+		<div class="fil-btn">Ок</div>
+		<input type="text" class="fil">
+		<select class="sf" name="fitler" id="">
+			<option value="employ_name">Имя</option>
+			<option value="work_name">Профессия</option>
+			<option value="employ_salary">Зарплата</option>
+			<option value="comp_name">Компания</option>
+			<option value="employ_date">Дата</option>
+		</select>
+		<p class="filter">Фильтр:</p>
+
 	</div>
 
-	<div class="add-btn"><p>Добавить</p></div>
+	<div class="buts">
+		<div class="add-btn"><p>Добавить</p></div>
+		<div class="comp-btn"><p>Компании</p></div>
+		<div class="work-btn"><p>Профессии</p></div>
+	</div>
 
 	<div id="bg-popup"></div>
 
@@ -114,5 +128,17 @@
 			<div class="no-btn">Отмена</div>
 		</div>
 	</div>
+
+	<div class="dic-popup">
+		<h1>Справочник</h1>
+		<div class="dic-content">
+			
+		</div>
+		<div class="buttons">
+			<div class="add-dic-btn">Добавить</div>
+			<div class="cancel-dic-btn">Назад</div>
+		</div>
+	</div>
+
 </body>
 </html>

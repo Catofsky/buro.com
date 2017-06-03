@@ -25,7 +25,7 @@ function onMain() {
 	$('#bg-popup').fadeOut(50);
 
 	$('#content').fadeIn(500);
-	$('.add-btn').fadeIn(500);
+	$('.buts').fadeIn(500);
 
 	connectDataBase('root', '', (data) => {
 			table = JSON.parse(data);
@@ -41,6 +41,39 @@ function onMain() {
 	$(document).on('click', '.ok-btn', confirmEdit);
 	$(document).on('click', '.add-btn', onAdd);
 	$(document).on('click', '.add-ok-btn', confirmAdd);
+	$(document).on('click', '.fil-btn', onFilter);
+	$(document).on('click', '.work-btn', onWork);
+	$(document).on('click', '.comp-btn', onComp);
+	$(document).on('click', '.cancel-dic-btn', onDicCancel);	
+}
+
+function onDicCancel() {
+	$('#bg-popup').fadeOut(500);
+	$('.dic-popup').fadeOut(500);
+}
+
+function onWork() {
+	$('#bg-popup').fadeIn(500);
+	$('.dic-popup').fadeIn(500);
+
+	showDic(workDict, 'Профессия');
+	$('.dic-popup').height($('.dic-popup table').height() + 170);
+}
+
+function onComp() {
+	$('#bg-popup').fadeIn(500);
+	$('.dic-popup').fadeIn(500);
+
+	showDic(compDict, 'Компания');
+	$('.dic-popup').height($('.dic-popup table').height() + 170);
+}
+
+function onFilter() {
+	var text = $('.fil').val();
+	var field = $('.sf').val();
+	$('#content').html('');
+
+	showTableFill(filter(field, text));
 }
 
 function onLogin() {
@@ -196,6 +229,29 @@ function showTable() {
 	setHeight();
 }
 
+function showDic(dict, title) {
+	var content = $('.dic-content');
+	content.html('');
+	var res = '<table><tr><td>#</td><td>' + title + '</td></tr>';
+	for (key in dict) {
+		res += '<tr class="dat"><td align="center">' + key + '</td><td>' + dict[key] + '</td><td class="edit-f"><img class="icon" src="img/edit.png" alt="Изменить"></td><td class="delete-f"><img class="icon" src="img/delete.png" alt="Удалить"></td></tr>';
+	}
+	res += '</table>';
+	content.append(res);
+}
+
+function showTableFill(table) {
+	var content = $('#content');
+	var res = '<div class="fil-btn">Ок</div><input type="text" class="fil"><select class="sf" name="fitler" id=""><option value="employ_name">Имя</option><option value="work_name">Профессия</option><option value="employ_salary">Зарплата</option><option value="comp_name">Компания</option><option value="employ_date">Дата</option></select><p class="filter">Фильтр:</p>';
+	res += '<h1>Бюро занятости</h1><table class="table"><tr><td>Имя Фамилия</td><td>Профессия</td><td>Зарплата</td><td>Предприятие</td><td>Регистрация</td></tr>';
+	for (key in table) {
+		res += '<tr class="dat"><td class="f-name">' + table[key].employ_name + '</td><td class="f-work">' + table[key].work_name + '</td><td align="right" class="f-salary">' + formatSalary(table[key].employ_salary) + '</td><td class="f-comp">' + table[key].comp_name + '</td><td align="right" class="f-date">' + formatDate(table[key].employ_date) + '</td><td class="edit"><img class="icon edit-icon" src="img/edit.png" alt="Изменить"></td><td class="delete"><img class="icon" src="img/delete.png" alt="Удалить"></td><td class="field-id" style="display: none">' + table[key].employ_id + '</td></tr>';
+	}
+	res += '</table>';
+	content.append(res);
+	setHeight();
+}
+
 function appendTable(row) {
 	var content = $('#content table');
 	var	res = '<tr class="dat"><td class="f-name">' + row.employ_name + '</td><td class="f-work">' + row.work_name + '</td><td align="right" class="f-salary">' + formatSalary(row.employ_salary) + '</td><td class="f-comp">' + row.comp_name + '</td><td align="right" class="f-date">' + formatDate(row.employ_date) + '</td><td class="edit"><img class="icon edit-icon" src="img/edit.png" alt="Изменить"></td><td class="delete"><img class="icon" src="img/delete.png" alt="Удалить"></td><td class="field-id" style="display: none">' + row.employ_id + '</td></tr>';
@@ -229,8 +285,6 @@ function addRecord(field) {
 			table.push(row);
 
 			onClose();
-
-			console.log(table);
 			appendTable(row);
 		}
 	});
@@ -271,12 +325,16 @@ function setDicts() {
 				compDict[res.comp[i][0]] = res.comp[i][1];
 			}
 
-			buildSelection();
+			buildSelection();			
 		}
 	});
 }
 
 function buildSelection() {
+	$('.a-work').html('');
+	$('.i-work').html('');
+	$('.a-comp').html('');
+	$('.i-comp').html('');
 	for (key in workDict) {
 		$('.a-work').append('<option value="' + key + '">' + workDict[key] + '</option>');
 		$('.i-work').append('<option value="' + key + '">' + workDict[key] + '</option>');
@@ -310,4 +368,14 @@ function formatSalary(source) {
 function formatDate(source) {
 	dat = source.split('-');
 	return dat[2] + ' ' + mounthsList[dat[1]] + ' ' + dat[0] + ' г';
+}
+
+function filter(field, text) {
+	res = [];
+	for (key in table) {
+		if (table[key][field].indexOf(text) !== -1) {
+			res.push(table[key]);
+		}
+	}
+	return res;
 }

@@ -8,6 +8,47 @@ body {
 	background: fixed #1b1d2b url(../img/bg.png) center top no-repeat;
 }
 
+.filter {
+	float: right;
+	margin: 16px 8px;
+	color: #ffccb3;
+	text-shadow: 1px 1px 0px #271823;
+	font-size: 1.1em;
+	display: inline-block;
+}
+
+.fil {
+	float: right;
+	display: inline-block;
+	margin: 16px 8px;
+}
+
+.fil-btn {
+	float: right;
+	display: inline-block;
+	margin: 16px 8px;
+	width: 80px;
+	height: 30px;
+	background: #6d3655;
+	text-align: center;
+	color: #fcd5c2;
+	padding: 10px 0 0 0;
+	font-weight: bold;
+	text-shadow: 2px 2px 0px rgba(0, 0, 0, .2);
+}
+
+.fil-btn:hover {
+	cursor: pointer;
+	background: #b05c6b;
+	color: #fcd5c2;
+}
+
+.sf {
+	display: inline-block;
+	float: right;
+	margin: 16px 8px;
+}
+
 #content {
 	background-color: #362732;
 	width: 900px;
@@ -85,7 +126,7 @@ td {
 	display: none;
 }
 
-.popup, .edit-popup, .add-popup, .login, .reg {
+.popup, .edit-popup, .add-popup, .login, .reg, .dic-popup {
     padding: 10px;
     background-color: #362732;
     position: fixed;
@@ -103,6 +144,11 @@ td {
 	-moz-user-select: none;
 	-webkit-user-select: none;
 	-o-user-select: none;
+}
+
+.dic-popup {
+	width: 430px;
+    height: 400px;
 }
 
 .popup {
@@ -151,7 +197,7 @@ input, select {
 	margin: auto;
 }
 
-.yes-btn, .no-btn, .ok-btn, .add-ok-btn, .login-btn, .reg-btn, .reg-ok-btn, .reg-cancel-btn {
+.yes-btn, .no-btn, .ok-btn, .add-ok-btn, .login-btn, .reg-btn, .reg-ok-btn, .reg-cancel-btn, .add-dic-btn, .cancel-dic-btn {
 	display: inline-block;
 	margin: 4px 4px;
 	width: 95px;
@@ -172,31 +218,37 @@ input, select {
 	width: 90px;
 }
 
-.no-btn, .reg-btn, .reg-cancel-btn {
+.no-btn, .reg-btn, .reg-cancel-btn, .cancel-dic-btn {
 	float: right;
 }
 
-.yes-btn:hover, .no-btn:hover, .ok-btn:hover, .add-ok-btn:hover, .login-btn:hover, .reg-btn:hover, .reg-cancel-btn:hover, .reg-ok-btn:hover {
-	cursor: default;
+.yes-btn:hover, .no-btn:hover, .ok-btn:hover, .add-ok-btn:hover, .login-btn:hover, .reg-btn:hover, .reg-cancel-btn:hover, .reg-ok-btn:hover, .add-dic-btn:hover, .cancel-dic-btn:hover {
+	cursor: pointer;
 	background: #b05c6b;
 	color: #fcd5c2;
 }
 
-.add-btn {
-	width: 100px;
-	height: 51px;
+.buts {
+	width: 400px;
+	height: 50px;
 	position: fixed;
+	margin: 50px;
 	left: 0;
 	right: 0;
 	top: 0;
 	bottom: 0;
-	z-index: 15;
-	margin: 50px;
+	z-index: 5;
+	display: none;
+}
 
+.add-btn, .comp-btn, .work-btn	 {
+	width: 100px;
+	height: 51px;	
 	color: #fcd5c2;
 	font-weight: bold;
 	text-align: center;
 	background: #6d3655;
+	margin: 10px;
 
 	transition: background .2s ease-in-out;
 	-moz-transition: background .2s ease-in-out;
@@ -205,14 +257,14 @@ input, select {
 
 	cursor: pointer;
 	box-shadow: 5px 5px 0 rgba(0, 0, 0, .2);
-	display: none;
+	display: inline-block;
 }
 
-.add-btn:hover {
+.add-btn:hover, .comp-btn:hover, .work-btn:hover {
 	background: #b05c6b;
 	color: #fce5d2;
 }
 
-.add-btn p {
+.add-btn p, .comp-btn p, .work-btn p {
 	height: 45px;
 }
