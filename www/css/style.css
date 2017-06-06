@@ -115,7 +115,7 @@ td {
 	margin: auto;
 }
 
-#bg-popup {
+#bg-popup, .dic-bg-popup {
 	position: fixed;
 	top: 0;
 	right: 0;
@@ -126,7 +126,7 @@ td {
 	display: none;
 }
 
-.popup, .edit-popup, .add-popup, .login, .reg, .dic-popup {
+.popup, .edit-popup, .add-popup, .login, .reg, .dic-popup, .dic-input, .dic-input-e {
     padding: 10px;
     background-color: #362732;
     position: fixed;
@@ -154,6 +154,11 @@ td {
 .popup {
 	width: 350px;
     height: 130px;
+}
+
+.dic-input, .dic-input-e {
+	width: 350px;
+	height: 140px;
 }
 
 .login, .reg {
@@ -197,7 +202,7 @@ input, select {
 	margin: auto;
 }
 
-.yes-btn, .no-btn, .ok-btn, .add-ok-btn, .login-btn, .reg-btn, .reg-ok-btn, .reg-cancel-btn, .add-dic-btn, .cancel-dic-btn {
+.yes-btn, .no-btn, .ok-btn, .add-ok-btn, .login-btn, .reg-btn, .reg-ok-btn, .reg-cancel-btn, .add-dic-btn, .cancel-dic-btn, .add-c-dic-btn, .c-dic-btn, .e-c-dic-btn {
 	display: inline-block;
 	margin: 4px 4px;
 	width: 95px;
@@ -218,11 +223,11 @@ input, select {
 	width: 90px;
 }
 
-.no-btn, .reg-btn, .reg-cancel-btn, .cancel-dic-btn {
+.no-btn, .reg-btn, .reg-cancel-btn, .cancel-dic-btn, .c-dic-btn {
 	float: right;
 }
 
-.yes-btn:hover, .no-btn:hover, .ok-btn:hover, .add-ok-btn:hover, .login-btn:hover, .reg-btn:hover, .reg-cancel-btn:hover, .reg-ok-btn:hover, .add-dic-btn:hover, .cancel-dic-btn:hover {
+.yes-btn:hover, .no-btn:hover, .ok-btn:hover, .add-ok-btn:hover, .login-btn:hover, .reg-btn:hover, .reg-cancel-btn:hover, .reg-ok-btn:hover, .add-dic-btn:hover, .cancel-dic-btn:hover, .add-c-dic-btn:hover, .c-dic-btn:hover, .e-c-dic-btn:hover {
 	cursor: pointer;
 	background: #b05c6b;
 	color: #fcd5c2;
@@ -267,4 +272,8 @@ input, select {
 
 .add-btn p, .comp-btn p, .work-btn p {
 	height: 45px;
+}
+
+.dic-i, .dic-i-e {
+	margin: 30px;
 }

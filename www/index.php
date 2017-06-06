@@ -140,5 +140,22 @@
 		</div>
 	</div>
 
+	<div class="dic-bg-popup"></div>
+	<div class="dic-input">
+		<input type="text" class="dic-i">
+		<div class="buttons">
+			<div class="add-c-dic-btn">Добавить</div>
+			<div class="c-dic-btn">Назад</div>
+		</div>
+	</div>
+
+	<div class="dic-input-e">
+		<input type="text" class="dic-i-e">
+		<div class="buttons">
+			<div class="e-c-dic-btn">Изменить</div>
+			<div class="c-dic-btn">Назад</div>
+		</div>
+	</div>
+
 </body>
 </html>

@@ -4,6 +4,7 @@ var editId;
 var editTarget;
 var table;
 var mounthsList = {'01':'янв', '02':'фев', '03':'мар', '04':'апр', '05':'май', '06':'июн', '07':'июл', '08':'авг', '09':'сен', '10':'окт', '11':'ноя', '12':'дек'};
+var currentDict;
 
 var workDict = {};
 var compDict = {};
@@ -17,6 +18,18 @@ function main() {
 	$(document).on('click', '.reg-cancel-btn', closeReg);
 	$(document).on('click', '.reg-ok-btn', confirmReg);
 	$(document).on('click', '.login-btn', onLogin);
+}
+
+function dynamicSort(property) {
+    var sortOrder = 1;
+    if(property[0] === "-") {
+        sortOrder = -1;
+        property = property.substr(1);
+    }
+    return function (a,b) {
+        var result = (a[property] < b[property]) ? -1 : (a[property] > b[property]) ? 1 : 0;
+        return result * sortOrder;
+    }
 }
 
 function onMain() {
@@ -44,7 +57,41 @@ function onMain() {
 	$(document).on('click', '.fil-btn', onFilter);
 	$(document).on('click', '.work-btn', onWork);
 	$(document).on('click', '.comp-btn', onComp);
-	$(document).on('click', '.cancel-dic-btn', onDicCancel);	
+	$(document).on('click', '.cancel-dic-btn', onDicCancel);
+	$(document).on('click', '.delete-f', onDictDelete);
+	$(document).on('click', '.add-dic-btn', onAddDict);
+	$(document).on('click', '.c-dic-btn', onCloseInputDict);
+	$(document).on('click', '.add-c-dic-btn', onAddDictConfirm);
+	$(document).on('click', '.edit-f', onDictEditOpen);
+	$(document).on('click', '.e-c-dic-btn', onDictEdit);
+
+	$(document).on('click', '.sf-name', () => { sorting('employ_name') });
+	$(document).on('click', '.sf-work', () => { sorting('work_name') });
+	$(document).on('click', '.sf-salary', () => { sorting('employ_salary') });
+	$(document).on('click', '.sf-comp', () => { sorting('comp_name') });
+	$(document).on('click', '.sf-date', () => { sorting('employ_date') });
+}
+
+var order = true;
+function sorting(field) {
+	if (order)
+		table.sort(dynamicSort(field));
+	else
+		table.sort(dynamicSort('-' + field));
+	$('#content').html('');
+	showTableFill(table);
+	order = !order;
+}
+
+function onAddDict() {
+	$('.dic-input').fadeIn(500);
+	$('.dic-bg-popup').fadeIn(500);
+}
+
+function onCloseInputDict() {
+	$('.dic-input').fadeOut(500);
+	$('.dic-input-e').fadeOut(500);
+	$('.dic-bg-popup').fadeOut(500);
 }
 
 function onDicCancel() {
@@ -58,6 +105,7 @@ function onWork() {
 
 	showDic(workDict, 'Профессия');
 	$('.dic-popup').height($('.dic-popup table').height() + 170);
+	currentDict = 'work';
 }
 
 function onComp() {
@@ -66,6 +114,7 @@ function onComp() {
 
 	showDic(compDict, 'Компания');
 	$('.dic-popup').height($('.dic-popup table').height() + 170);
+	currentDict = 'comp';
 }
 
 function onFilter() {
@@ -165,6 +214,50 @@ function onDelete(event) {
 	deleteRecord(deleteId);
 }
 
+function onDictDelete(event) {
+	if ($(event.target).hasClass('icon'))
+		target = $(event.target).parent().parent();
+	else
+		target = $(event.target).parent();
+	name = target.children('.d-name').html();
+	target.fadeOut(500);
+	delDict(currentDict, name);
+	if (currentDict === 'comp')
+		dict = compDict;
+	else
+		dict = workDict;
+	for (key in dict) {
+		if (name == dict[key]) {
+			delete dict[key];
+			break;
+		}
+	}
+}
+
+var edname;
+var edtarget;
+
+function onDictEditOpen(event) {
+	$('.dic-input-e').fadeIn(500);
+	$('.dic-bg-popup').fadeIn(500);
+
+	if ($(event.target).hasClass('icon'))
+		edtarget = $(event.target).parent().parent();
+	else
+		edtarget = $(event.target).parent();
+	edname = edtarget.children('.d-name').html();
+	$('.dic-i-e').val(edname);
+}
+
+function onDictEdit() {
+	newname = $('.dic-i-e').val();
+	if (currentDict == 'comp')
+		editDict(newname, 'comp', edname);
+	else
+		editDict(newname, 'work', edname);
+	onCloseInputDict();
+}
+
 function onClose() {
 	$('#bg-popup').fadeOut(500);
 	$('.popup').fadeOut(500);
@@ -188,6 +281,11 @@ function confirmAdd() {
 	};
 
 	addRecord(field);
+}
+
+function onAddDictConfirm() {
+	var name = $('.dic-i').val();
+	addDict(name, currentDict);
 }
 
 function confirmDelete() {
@@ -220,7 +318,7 @@ function setHeight() {
 
 function showTable() {
 	var content = $('#content');
-	var res = '<h1>Бюро занятости</h1><table class="table"><tr><td>Имя Фамилия</td><td>Профессия</td><td>Зарплата</td><td>Предприятие</td><td>Регистрация</td></tr>';
+	var res = '<h1>Бюро занятости</h1><table class="table"><tr><td class="sf-name">Имя Фамилия</td><td class="sf-work">Профессия</td><td class="sf-salary">Зарплата</td><td class="sf-comp">Предприятие</td><td class="sf-date">Регистрация</td></tr>';
 	for (key in table) {
 		res += '<tr class="dat"><td class="f-name">' + table[key].employ_name + '</td><td class="f-work">' + table[key].work_name + '</td><td align="right" class="f-salary">' + formatSalary(table[key].employ_salary) + '</td><td class="f-comp">' + table[key].comp_name + '</td><td align="right" class="f-date">' + formatDate(table[key].employ_date) + '</td><td class="edit"><img class="icon edit-icon" src="img/edit.png" alt="Изменить"></td><td class="delete"><img class="icon" src="img/delete.png" alt="Удалить"></td><td class="field-id" style="display: none">' + table[key].employ_id + '</td></tr>';
 	}
@@ -234,7 +332,7 @@ function showDic(dict, title) {
 	content.html('');
 	var res = '<table><tr><td>#</td><td>' + title + '</td></tr>';
 	for (key in dict) {
-		res += '<tr class="dat"><td align="center">' + key + '</td><td>' + dict[key] + '</td><td class="edit-f"><img class="icon" src="img/edit.png" alt="Изменить"></td><td class="delete-f"><img class="icon" src="img/delete.png" alt="Удалить"></td></tr>';
+		res += '<tr class="dat"><td align="center">' + key + '</td><td class="d-name">' + dict[key] + '</td><td class="edit-f"><img class="icon" src="img/edit.png" alt="Изменить"></td><td class="delete-f"><img class="icon" src="img/delete.png" alt="Удалить"></td><td class="dic-id" style="display: none"></tr>';
 	}
 	res += '</table>';
 	content.append(res);
@@ -243,7 +341,7 @@ function showDic(dict, title) {
 function showTableFill(table) {
 	var content = $('#content');
 	var res = '<div class="fil-btn">Ок</div><input type="text" class="fil"><select class="sf" name="fitler" id=""><option value="employ_name">Имя</option><option value="work_name">Профессия</option><option value="employ_salary">Зарплата</option><option value="comp_name">Компания</option><option value="employ_date">Дата</option></select><p class="filter">Фильтр:</p>';
-	res += '<h1>Бюро занятости</h1><table class="table"><tr><td>Имя Фамилия</td><td>Профессия</td><td>Зарплата</td><td>Предприятие</td><td>Регистрация</td></tr>';
+	res += '<h1>Бюро занятости</h1><table class="table"><tr><td class="sf-name">Имя Фамилия</td><td class="sf-work">Профессия</td><td class="sf-salary">Зарплата</td><td class="sf-comp">Предприятие</td><td class="sf-date">Регистрация</td></tr>';
 	for (key in table) {
 		res += '<tr class="dat"><td class="f-name">' + table[key].employ_name + '</td><td class="f-work">' + table[key].work_name + '</td><td align="right" class="f-salary">' + formatSalary(table[key].employ_salary) + '</td><td class="f-comp">' + table[key].comp_name + '</td><td align="right" class="f-date">' + formatDate(table[key].employ_date) + '</td><td class="edit"><img class="icon edit-icon" src="img/edit.png" alt="Изменить"></td><td class="delete"><img class="icon" src="img/delete.png" alt="Удалить"></td><td class="field-id" style="display: none">' + table[key].employ_id + '</td></tr>';
 	}
@@ -309,6 +407,71 @@ function deleteRecord(id) {
 		type: 'POST',
 		success: () => {
 
+		}
+	});
+}
+
+function addDict(name, dict) {
+	$.ajax({
+		url: 'adddict.php',
+		data: {name: name, dict: dict},
+		type: 'POST',
+		success: (data) => {		
+
+			if (currentDict === 'comp')
+				compDict[data] = name;
+			else
+				workDict[data] = name;
+
+			$('.dic-content').html('');
+			if (currentDict === 'comp')
+				showDic(compDict, 'Компания');
+			else
+				showDic(workDict, 'Профессия');
+
+			$('.dic-popup').height($('.dic-popup table').height() + 190);
+			onCloseInputDict();
+		}
+	});
+}
+
+function editDict(name, dict, old) {
+	$.ajax({
+		url: 'editdict.php',
+		data: {name: name, dict: dict, old: old},
+		type: 'POST',
+		success: (data) => {
+			if (currentDict === 'comp')
+				key = findKey(compDict, old);
+			else
+				key = findKey(workDict, old);
+
+			if (currentDict === 'comp')
+				compDict[key] = name;
+			else
+				workDict[key] = name;
+
+			$('.dic-content').html('');
+			if (currentDict === 'comp')
+				showDic(compDict, 'Компания');
+			else
+				showDic(workDict, 'Профессия');
+
+			$('.dic-popup').height($('.dic-popup table').height() + 190);
+			onCloseInputDict();
+		}
+	});
+}
+
+function delDict(dict, name) {
+	$.ajax({
+		url: 'deldict.php',
+		data: {dict: dict, name: name},
+		type: 'POST',
+		success: (data) => {
+			console.log(data);
+
+			$('.dic-popup').height($('.dic-popup table').height() + 170);
 		}
 	});
 }
